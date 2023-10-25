@@ -85,27 +85,48 @@ def ParseSignal(signal: str) -> dict:
 
     # extracts symbol from trade signal
     trade['Symbol'] = (signal[0].split())[-1].upper()
+
+
+
+
+    
+
+     if('Lot'.lower() in signal[1].lower()):
+             # calculates the position size using stop loss and RISK FACTOR
+    trade['PositionSize'] = float((signal[1].split())[-1])
+         
+    elif('Risk'.lower() in signal[1].lower()):
+            # adds risk factor to trade
+        trade['RiskFactor'] = (signal[1].split())[-1]
+        trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
+        
+    
+
+
+
+
+
+
     
     # checks if the symbol is valid, if not, returns an empty dictionary
     if(trade['Symbol'] not in SYMBOLS):
         return {}
-    
+
     # checks wheter or not to convert entry to float because of market exectution option ("NOW")
     if(trade['OrderType'] == 'Buy' or trade['OrderType'] == 'Sell'):
-        trade['Entry'] = (signal[1].split())[-1]
+        trade['Entry'] = (signal[2].split())[-1]
     
     else:
-        trade['Entry'] = float((signal[1].split())[-1])
+        trade['Entry'] = float((signal[2].split())[-1])
     
-    trade['StopLoss'] = float((signal[2].split())[-1])
-    trade['TP'] = [float((signal[3].split())[-1])]
+    trade['StopLoss'] = float((signal[3].split())[-1])
+    trade['TP'] = [float((signal[4].split())[-1])]
 
     # checks if there's a fourth line and parses it for TP2
-    if(len(signal) > 4):
-        trade['TP'].append(float(signal[4].split()[-1]))
+    if(len(signal) > 5):
+        trade['TP'].append(float(signal[5].split()[-1]))
     
-    # adds risk factor to trade
-    trade['RiskFactor'] = RISK_FACTOR
+    
 
     return trade
 
@@ -133,9 +154,6 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
 
     # calculates the stop loss in pips
     stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
-
-    # calculates the position size using stop loss and RISK FACTOR
-    trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
 
     # calculates the take profit(s) in pips
     takeProfitPips = []
@@ -373,7 +391,7 @@ def CalculateTrade(update: Update, context: CallbackContext) -> int:
         
         except Exception as error:
             logger.error(f'Error: {error}')
-            errorMessage = f"There was an error parsing this trade 😕\n\nError: {error}\n\nPlease re-enter trade with this format:\n\nBUY/SELL SYMBOL\nEntry \nSL \nTP \n\nOr use the /cancel to command to cancel this action."
+            errorMessage = f"There was an error parsing this trade 😕\n\nError: {error}\n\nPlease re-enter trade with this format:\n\nBUY/SELL SYMBOL\nEntry \n \nTP \n\nOr use the /cancel to command to cancel this action."
             update.effective_message.reply_text(errorMessage)
 
             # returns to CALCULATE to reattempt trade parsing
@@ -430,7 +448,7 @@ def help(update: Update, context: CallbackContext) -> None:
     help_message = "This bot is used to automatically enter trades onto your MetaTrader account directly from Telegram. To begin, ensure that you are authorized to use this bot by adjusting your Python script or environment variables.\n\nThis bot supports all trade order types (Market Execution, Limit, and Stop)\n\nAfter an extended period away from the bot, please be sure to re-enter the start command to restart the connection to your MetaTrader account."
     commands = "List of commands:\n/start : displays welcome message\n/help : displays list of commands and example trades\n/trade : takes in user inputted trade for parsing and placement\n/calculate : calculates trade information for a user inputted trade"
     trade_example = "Example Trades 💴:\n\n"
-    market_execution_example = "Market Execution:\nBUY GBPUSD\nEntry NOW\nSL 1.14336\nTP 1.28930\nTP 1.29845\n\n"
+    market_execution_example = "Market Execution:\nBUY GBPUSD\nEntry NOW\n 1.14336\nTP 1.28930\nTP 1.29845\n\n"
     limit_example = "Limit Execution:\nBUY LIMIT GBPUSD\nEntry 1.14480\nSL 1.14336\nTP 1.28930\n\n"
     note = "You are able to enter up to two take profits. If two are entered, both trades will use half of the position size, and one will use TP1 while the other uses TP2.\n\nNote: Use 'NOW' as the entry to enter a market execution trade."
 
