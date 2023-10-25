@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python3
 import asyncio
 import logging
@@ -90,13 +91,12 @@ def ParseSignal(signal: str) -> dict:
 
 
     
+    # calculates the position size using stop loss and RISK FACTOR
+    if('Lot'.lower() in signal[1].lower()):
+        trade['PositionSize'] = float((signal[1].split())[-1])
 
-     if('Lot'.lower() in signal[1].lower()):
-             # calculates the position size using stop loss and RISK FACTOR
-    trade['PositionSize'] = float((signal[1].split())[-1])
-         
+    # adds risk factor to trade
     elif('Risk'.lower() in signal[1].lower()):
-            # adds risk factor to trade
         trade['RiskFactor'] = (signal[1].split())[-1]
         trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
         
