@@ -100,7 +100,8 @@ def ParseSignal(signal: str) -> dict:
         trade['RiskFactor'] = (signal[1].split())[-1]
         trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
         
-    
+    else:
+        return {}
 
 
 
