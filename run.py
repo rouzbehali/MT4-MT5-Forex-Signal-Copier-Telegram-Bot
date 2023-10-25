@@ -97,7 +97,7 @@ def ParseSignal(signal: str) -> dict:
         trade['PositionSize'] = float((signal[1].split())[-1])
 
     # adds risk factor to trade
-    elif:('Risk'.lower() in signal[1].lower()):
+    elif('Risk'.lower() in signal[1].lower()):
         trade['RiskFactor'] = (signal[1].split())[-1]
         trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
     else:
