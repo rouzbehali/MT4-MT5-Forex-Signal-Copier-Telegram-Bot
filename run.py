@@ -41,7 +41,7 @@ CALCULATE, TRADE, DECISION = range(3)
 SYMBOLS = ['AUDCAD', 'AUDCHF', 'AUDJPY', 'AUDNZD', 'AUDUSD', 'CADCHF', 'CADJPY', 'CHFJPY', 'EURAUD', 'EURCAD', 'EURCHF', 'EURGBP', 'EURJPY', 'EURNZD', 'EURUSD', 'GBPAUD', 'GBPCAD', 'GBPCHF', 'GBPJPY', 'GBPNZD', 'GBPUSD', 'NOW', 'NZDCAD', 'NZDCHF', 'NZDJPY', 'NZDUSD', 'USDCAD', 'USDCHF', 'USDJPY', 'XAGUSD', 'XAUUSD']
 
 # RISK FACTOR
-RISK_FACTOR = float(os.environ.get("RISK_FACTOR"))
+# RISK_FACTOR = float(os.environ.get("RISK_FACTOR"))
 
 
 # Helper Functions
@@ -93,15 +93,14 @@ def ParseSignal(signal: str) -> dict:
     
     # calculates the position size using stop loss and RISK FACTOR
     if('Lot'.lower() in signal[1].lower()):
+        trade['RiskFactor'] = 1
         trade['PositionSize'] = float((signal[1].split())[-1])
 
     # adds risk factor to trade
-    elif('Risk'.lower() in signal[1].lower()):
+    else:('Risk'.lower() in signal[1].lower()):
         trade['RiskFactor'] = (signal[1].split())[-1]
         trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
-        
-    else:
-        return {}
+
 
 
 
