@@ -149,7 +149,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     
     # calculates the position size using stop loss and RISK FACTOR
     if('Lot'.lower() in signal[1].lower()):
-        trade['RiskFactor'] = 1
+        RISK_FACTOR = float(os.environ.get("RISK_FACTOR"))
         trade['PositionSize'] = float((signal[1].split())[-1])
 
     # adds risk factor to trade
