@@ -300,6 +300,19 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
         account_information = await connection.get_account_information()
 
         update.effective_message.reply_text("Successfully connected to MetaTrader!\nCalculating trade risk ... 🤔")
+        # calculates the stop loss in pips
+        if(trade['Symbol'] == 'XAUUSD'):
+            multiplier = 0.1
+
+        elif(trade['Symbol'] == 'XAGUSD'):
+            multiplier = 0.001
+
+        elif(str(trade['Entry']).index('.') >= 2):
+            multiplier = 0.01
+
+        else:
+            multiplier = 0.0001
+
 
         # checks if the order is a market execution to get the current price of symbol
         if(trade['Entry'] == 'NOW'):
