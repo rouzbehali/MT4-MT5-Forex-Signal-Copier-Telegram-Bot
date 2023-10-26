@@ -143,7 +143,11 @@ def ParseSignal(signal: str) -> dict:
     else:
         trade['Entry'] = float((signal[2].split())[-1])
     
-    trade['StopLoss'] = float((signal[3].split())[-1])
+    if 'pips' in signal[3]:
+        trade['SLpip'] = int(signal[3].split()[1])
+    else:
+        trade['StopLoss'] = float(signal[3].split()[-1])
+        
     trade['TP'] = [float((signal[4].split())[-1])]
 
     # checks if there's a fourth line and parses it for TP2
@@ -177,6 +181,17 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
         multiplier = 0.0001
 
     # calculates the stop loss in pips
+
+    if 'SLpip' in trade:
+        stopLossPips = trade['SLpip']
+    elif 'StopLoss' in trade:
+        stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
+    else:
+        stopLossPips = None
+
+
+    
+    
     stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
     
     if(trade['RiskFactor'] == 98989898):
