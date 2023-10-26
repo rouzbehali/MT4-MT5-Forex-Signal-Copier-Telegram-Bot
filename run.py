@@ -156,8 +156,6 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     elif('Risk'.lower() in signal[1].lower()):
         trade['RiskFactor'] = float((signal[1].split())[-1])
         trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
-    else:
-        return {}
 
     # calculates the take profit(s) in pips
     takeProfitPips = []
