@@ -329,6 +329,27 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
             # uses ask price if the order type is a sell
             if(trade['OrderType'] == 'Sell'):
                 trade['Entry'] = float(price['ask'])
+                if 'SLpip' in trade:
+                    trade['StopLoss'] = trade['Entry']+(trade['SLpip']*multiplier)
+                elif 'StopLoss' in trade:
+                    trade['StopLoss'] = trade['StopLoss']
+                else:
+                    stopLossPips = None
+        else: 
+            if(trade['OrderType'] == 'Buy Limit' or trade['OrderType'] == 'Buy Stop'):
+                if 'SLpip' in trade:
+                    trade['StopLoss'] = trade['Entry']-(trade['SLpip']*multiplier)
+                elif 'StopLoss' in trade:
+                    trade['StopLoss'] = trade['StopLoss']
+                else:
+                    stopLossPips = None
+            elif(trade['OrderType'] == 'Sell Limit' or trade['OrderType'] == 'Sell Stop'):
+                if 'SLpip' in trade:
+                    trade['StopLoss'] = trade['Entry']+(trade['SLpip']*multiplier)
+                elif 'StopLoss' in trade:
+                    trade['StopLoss'] = trade['StopLoss']
+                else:
+                    stopLossPips = None                    
 
         # produces a table with trade information
         GetTradeInformation(update, trade, account_information['balance'])
