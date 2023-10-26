@@ -304,6 +304,7 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
         if(trade['Symbol'] == 'XAUUSD'):
             multiplier = 0.1
             update.effective_message.reply_text("Pair is XAUUSD")
+            update.effective_message.reply_text(multiplier)
 
         elif(trade['Symbol'] == 'XAGUSD'):
             multiplier = 0.001
