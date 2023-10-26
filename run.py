@@ -327,7 +327,7 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
             if(trade['OrderType'] == 'Buy'):
                 trade['Entry'] = float(price['bid'])
                 if 'SLpip' in trade:
-                    trade['StopLoss'] = price-(trade['SLpip']*multiplier)
+                    trade['StopLoss'] = trade['Entry']-(trade['SLpip']*multiplier)
                 elif 'StopLoss' in trade:
                     trade['StopLoss'] = trade['StopLoss']
                 else:
