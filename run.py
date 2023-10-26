@@ -184,7 +184,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
 
     if 'SLpip' in trade:
         stopLossPips = trade['SLpip']
-        trade['StopLoss'] = trade['Entry']
+        
     elif 'StopLoss' in trade:
         stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
     else:
@@ -308,6 +308,12 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
             # uses bid price if the order type is a buy
             if(trade['OrderType'] == 'Buy'):
                 trade['Entry'] = float(price['bid'])
+                if 'SLpip' in trade:
+                    trade['StopLoss'] = price-(trade['SLpip']*multiplier)
+                elif 'StopLoss' in trade:
+                    trade['StopLoss'] = trade['StopLoss']
+                else:
+                    stopLossPips = None
 
             # uses ask price if the order type is a sell
             if(trade['OrderType'] == 'Sell'):
@@ -326,7 +332,7 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
                 # executes buy market execution order
                 if(trade['OrderType'] == 'Buy'):
                     for takeProfit in trade['TP']:
-                        result = await connection.create_market_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['StopLoss' , takeProfit)
+                        result = await connection.create_market_buy_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['StopLoss'] , takeProfit)
 
                 # executes buy limit order
                 elif(trade['OrderType'] == 'Buy Limit'):
