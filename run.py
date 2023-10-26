@@ -303,15 +303,19 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
         # calculates the stop loss in pips
         if(trade['Symbol'] == 'XAUUSD'):
             multiplier = 0.1
+            update.effective_message.reply_text("Pair is XAUUSD")
 
         elif(trade['Symbol'] == 'XAGUSD'):
             multiplier = 0.001
+            update.effective_message.reply_text("Pair is XAGUSD")
 
         elif(str(trade['Entry']).index('.') >= 2):
             multiplier = 0.01
+            update.effective_message.reply_text("Pair has .")
 
         else:
             multiplier = 0.0001
+            update.effective_message.reply_text("Pair is else")
 
 
         # checks if the order is a market execution to get the current price of symbol
