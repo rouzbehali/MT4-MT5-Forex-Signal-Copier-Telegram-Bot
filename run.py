@@ -147,6 +147,8 @@ def ParseSignal(signal: str) -> dict:
         trade['SLpip'] = float(signal[3].split()[1])
     else:
         trade['StopLoss'] = float(signal[3].split()[-1])
+    update.effective_message.reply_text(trade['SLpip'])
+    update.effective_message.reply_text(trade['StopLoss'])
         
     trade['TP'] = [float((signal[4].split())[-1])]
 
