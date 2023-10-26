@@ -160,7 +160,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     if(trade['RiskFactor'] == 98989898):
         print("Risk factor is 98989898")
         print(trade['RiskFactor'])
-        trade['PositionSize'] = 0.02
+        trade['PositionSize'] = PositionSize
     else:    
         print("Risk factor is N/A")
         print(trade['RiskFactor'])
