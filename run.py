@@ -307,10 +307,6 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
             multiplier = 0.001
             update.effective_message.reply_text("Pair is XAGUSD")
 
-        elif(str(trade['Entry']).index('.') >= 2):
-            multiplier = 0.01
-            update.effective_message.reply_text("Pair has .")
-
         else:
             multiplier = 0.0001
             update.effective_message.reply_text("Pair is else")
