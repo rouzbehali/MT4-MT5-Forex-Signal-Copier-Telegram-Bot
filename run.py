@@ -53,12 +53,19 @@ def ParseSignal(signal: str) -> dict:
 
     Returns:
         a dictionary that contains trade signal information
+    
     """
+    
 
     # converts message to list of strings for parsing
     signal = signal.splitlines()
     signal = [line.rstrip() for line in signal]
 
+    """
+    For example, if the signal is "BUY EURUSD\nTP 1.2100\nSL 1.9383"
+    after executing this line,
+    signal will become ['BUY EURUSD', 'TP 1.2100', 'SL 1.9383'].
+    """
     trade = {}
 
     # determines the order type of the trade
@@ -83,9 +90,23 @@ def ParseSignal(signal: str) -> dict:
     # returns an empty dictionary if an invalid order type was given
     else:
         return {}
+    """
+    'Buy'.lower() converts the string 'Buy' to lowercase, ensuring it matches the case of the text in signal.
+    signal[0].lower() retrieves the first line from the signal list and converts it to lowercase.
+    The in operator checks if the lowercase version of 'Buy' is present in the lowercase version of the first line of signal.
+    """
 
     # extracts symbol from trade signal
     trade['Symbol'] = (signal[0].split())[-1].upper()
+
+    """
+    Here's a breakdown of what the code does:
+    1 - signal[0] retrieves the first line from the signal list.
+    2 - .split() splits the first line into a list of words using whitespace as the delimiter.
+    3 - [-1] retrieves the last element (word) from the list obtained in the previous step.
+    4 - .upper() converts the word to uppercase.
+    5 - Finally, the resulting uppercase word is assigned to trade['Symbol'].
+    """
 
 
 
