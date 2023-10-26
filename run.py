@@ -143,8 +143,8 @@ def ParseSignal(signal: str) -> dict:
     else:
         trade['Entry'] = float((signal[2].split())[-1])
     
-    if 'pips' in signal[3]:
-        trade['SLpip'] = int(signal[3].split()[1])
+    if 'pip' in signal[3]:
+        trade['SLpip'] = float(signal[3].split()[1])
     else:
         trade['StopLoss'] = float(signal[3].split()[-1])
         
@@ -188,11 +188,6 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
         stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
     else:
         stopLossPips = None
-
-
-    
-    
-    stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
     
     if(trade['RiskFactor'] == 98989898):
         print("Risk factor is 98989898")
