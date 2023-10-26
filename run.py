@@ -158,7 +158,7 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
     stopLossPips = abs(round((trade['StopLoss'] - trade['Entry']) / multiplier))
     
     if(trade['RiskFactor'] == 'N/A'):
-        trade['PositionSize'] = round(PositionSize,2)
+        trade['PositionSize'] = PositionSize
     else:     
         trade['PositionSize'] = math.floor(((balance * trade['RiskFactor']) / stopLossPips) / 10 * 100) / 100
     
