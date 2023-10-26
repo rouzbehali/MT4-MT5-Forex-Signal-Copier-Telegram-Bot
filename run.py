@@ -99,6 +99,7 @@ def ParseSignal(signal: str) -> dict:
     # adds risk factor to trade
     elif('Risk'.lower() in signal[1].lower()):
         trade['RiskFactor'] = float((signal[1].split())[-1])
+        trade['RiskFactor'] = trade['RiskFactor'] * 0.01
         
     else:
         return {}
